@@ -2,11 +2,7 @@ package com.mvvm.view.viewmodel;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 import android.widget.Toast;
-
-import com.mvvm.R;
-import com.mvvm.databinding.ActivityLoginBinding;
 import com.mvvm.view.activity.MainActivity;
 import com.mvvm.view.entity.UserEntity;
 import com.mvvm.view.model.UserModel;
@@ -32,8 +28,6 @@ public class UserInfoViewModel implements IUserInfoView{
     }
 
     public void requestLogin(String username, String password){
-        System.out.println();
-        System.out.println("username------ssss------>"+username);
         userModel.login(username,password);
     }
 
@@ -41,9 +35,10 @@ public class UserInfoViewModel implements IUserInfoView{
     @Override
     public void loginSuccess(UserEntity userEntity) {
         Toast.makeText(context,"loginSuccess",Toast.LENGTH_LONG).show();
-//        Intent intent = new Intent();
-//        intent.setClass(context, MainActivity.class);
-//        context.startActivity(intent);
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setClass(context, MainActivity.class);
+        context.startActivity(intent);
     }
 
     //注册成功回调

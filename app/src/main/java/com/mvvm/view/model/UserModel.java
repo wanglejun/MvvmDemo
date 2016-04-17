@@ -34,25 +34,22 @@ public class UserModel {
      */
     public void login(String username,String password){
         Call<HttpResponseEntity<UserEntity>> callResponse = iUserApi.login(username,password);
-        System.out.println();
-        System.out.println("username---------->"+username);
-        System.out.println("password---------->"+password);
-
         callResponse.enqueue(new Callback<HttpResponseEntity<UserEntity>>() {
             @Override
             public void onResponse(Call<HttpResponseEntity<UserEntity>> call, Response<HttpResponseEntity<UserEntity>> response) {
                 System.out.println();
                 System.out.println("ssssssssssssssssssssss");
                 System.out.println("isSuccessful----------------->"+response.isSuccessful());
-                System.out.println("username----------------->"+response.body().getData().username.get());
-
-                iUserInfoView.loginSuccess(response.body().getData());
+                System.out.println("username----------------->"+response.body().getData().getUsername());
+                if(response.code() == 200){
+                    iUserInfoView.loginSuccess(response.body().getData());
+                }
             }
 
             @Override
             public void onFailure(Call<HttpResponseEntity<UserEntity>> call, Throwable t) {
                 System.out.println();
-                System.out.println("onFailure...............");
+                System.out.println("onFailure..............."+t.getMessage());
             }
         });
     }
