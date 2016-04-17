@@ -34,16 +34,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
     }
 
 
     @Override
     public void initView() {
+        loginBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
         activityComponet.inject(this);
-        System.out.println();
-        System.out.println("loginBinding------------>"+loginBinding);
-        System.out.println("userInfoViewModel------------>"+userInfoViewModel);
         loginBinding.setUserInfoViewModel(userInfoViewModel);
     }
 
@@ -67,6 +64,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_sign_in_btn:
+                System.out.println();
+                System.out.println("username------------>"+loginBinding.loginUsernameEdit.getText().toString());
                 userInfoViewModel.requestLogin(loginBinding.loginUsernameEdit.getText().toString(),
                         loginBinding.loginPasswordEdit.getText().toString());
                 break;

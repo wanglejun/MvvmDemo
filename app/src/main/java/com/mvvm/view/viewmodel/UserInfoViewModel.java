@@ -32,6 +32,8 @@ public class UserInfoViewModel implements IUserInfoView{
     }
 
     public void requestLogin(String username, String password){
+        System.out.println();
+        System.out.println("username------ssss------>"+username);
         userModel.login(username,password);
     }
 

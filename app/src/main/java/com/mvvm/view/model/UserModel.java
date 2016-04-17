@@ -20,7 +20,6 @@ import retrofit2.Response;
  * */
 public class UserModel {
     IUserApi iUserApi;
-
     private IUserInfoView iUserInfoView;
 
     @Inject
@@ -35,6 +34,10 @@ public class UserModel {
      */
     public void login(String username,String password){
         Call<HttpResponseEntity<UserEntity>> callResponse = iUserApi.login(username,password);
+        System.out.println();
+        System.out.println("username---------->"+username);
+        System.out.println("password---------->"+password);
+
         callResponse.enqueue(new Callback<HttpResponseEntity<UserEntity>>() {
             @Override
             public void onResponse(Call<HttpResponseEntity<UserEntity>> call, Response<HttpResponseEntity<UserEntity>> response) {
@@ -48,7 +51,8 @@ public class UserModel {
 
             @Override
             public void onFailure(Call<HttpResponseEntity<UserEntity>> call, Throwable t) {
-
+                System.out.println();
+                System.out.println("onFailure...............");
             }
         });
     }

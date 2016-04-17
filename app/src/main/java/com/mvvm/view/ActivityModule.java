@@ -18,7 +18,7 @@ import dagger.Provides;
 public class ActivityModule {
 
     @Provides
-    public Context provieContext(){
+    public Context provideContext(){
         return AppApplication.getsInstance().getAppComponent().context();
     }
 
