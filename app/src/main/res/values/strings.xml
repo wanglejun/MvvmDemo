@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MvvmDemo</string>
+    <string name="sing_in">Sign in</string>
+    <string name="login_welcome">Welcome</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_register">Register</string>
+
+</resources>
