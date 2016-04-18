@@ -1,7 +1,9 @@
 package com.mvvm.api.interfaces;
 
-import com.mvvm.model.HttpResponseEntity;
-import com.mvvm.view.entity.UserEntity;
+
+
+import com.mvvm.entity.HttpResponseEntity;
+import com.mvvm.entity.UserEntity;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -18,12 +20,12 @@ public interface IUserApi {
     @FormUrlEncoded
     @Headers(REQUEST_HEAD)
     @POST("register")
-    Call<HttpResponseEntity<String>> register(@Field("username")String username,@Field("password")String password);
+    Call<HttpResponseEntity<String>> register(@Field("username")String username, @Field("password")String password);
 
 
     @FormUrlEncoded
     @Headers(REQUEST_HEAD)
     @POST("login")
-    Call<HttpResponseEntity<UserEntity>> login(@Field("username")String username,@Field("password")String password);
+    Call<HttpResponseEntity<UserEntity>> login(@Field("username")String username, @Field("password")String password);
 
 }

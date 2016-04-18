@@ -3,19 +3,22 @@ package com.mvvm.view.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.mvvm.AppApplication;
-import com.mvvm.AppComponet;
-import com.mvvm.R;
-import com.mvvm.view.ActivityComponet;
-import com.mvvm.view.ActivityModule;
-import com.mvvm.view.DaggerActivityComponet;
+import com.mvvm.dagger.AppApplication;
+import com.mvvm.dagger.AppComponet;
+import com.mvvm.view.dagger.ActivityComponet;
+import com.mvvm.view.dagger.ActivityModule;
+import com.mvvm.view.dagger.DaggerActivityComponet;
+
 
 /**
  * BaseActivity
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity
+//        <V extends ViewDataBinding>
+        extends AppCompatActivity {
 
     public ActivityComponet activityComponet;
+//    private V dataBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +30,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void init(){
         initAppComponet(AppApplication.getsInstance().getAppComponent());
         activityComponet = DaggerActivityComponet.builder().activityModule(new ActivityModule()).build();
+
+//        dataBinding = DataBindingUtil.setContentView(this,inflaterContentView());
         initView();
         initData();
         setListener();
     }
+
+
+//    protected abstract int inflaterContentView();
+
     /**
      * 初始化view
      */
@@ -50,5 +59,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 设置监听
      */
     public abstract void setListener();
+
+//    public V getDataBinding(){
+//        return dataBinding;
+//    }
 }
 

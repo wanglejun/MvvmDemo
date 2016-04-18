@@ -6,19 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 
 
-import com.mvvm.AppComponet;
+import com.mvvm.dagger.AppComponet;
 import com.mvvm.R;
-import com.mvvm.api.interfaces.IUserApi;
 import com.mvvm.databinding.ActivityLoginBinding;
-import com.mvvm.model.HttpResponseEntity;
-import com.mvvm.view.entity.UserEntity;
-import com.mvvm.view.viewmodel.UserInfoViewModel;
+import com.mvvm.viewmodel.UserInfoViewModel;
 
 import javax.inject.Inject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
@@ -36,12 +29,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
     }
 
+//    @Override
+//    protected int inflaterContentView() {
+//        return R.layout.activity_login;
+//    }
 
     @Override
     public void initView() {
+//        loginBinding = getDataBinding();
         loginBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
         activityComponet.inject(this);
-        loginBinding.setUserInfoViewModel(userInfoViewModel);
+//        loginBinding.setUserInfoViewModel(userInfoViewModel);
     }
 
     @Override
@@ -64,13 +62,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_sign_in_btn:
-                System.out.println();
-                System.out.println("username------------>"+loginBinding.loginUsernameEdit.getText().toString());
-                userInfoViewModel.requestLogin(loginBinding.loginUsernameEdit.getText().toString(),
-                        loginBinding.loginPasswordEdit.getText().toString());
+                userInfoViewModel.requestLogin(loginBinding.loginUsernameEdit.getText().toString().trim(),
+                        loginBinding.loginPasswordEdit.getText().toString().trim());
                 break;
 
             case R.id.login_register_btn:
+                userInfoViewModel.goRegister();
                 break;
         }
     }

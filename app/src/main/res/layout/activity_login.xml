@@ -2,9 +2,10 @@
  >
 
     <data>
+        <!--
         <variable
             name="userInfoViewModel"
-            type="com.mvvm.view.viewmodel.UserInfoViewModel"/>
+            type="com.mvvm.view.viewmodel.UserInfoViewModel"/>-->
     </data>
     <RelativeLayout
         android:layout_width="match_parent"

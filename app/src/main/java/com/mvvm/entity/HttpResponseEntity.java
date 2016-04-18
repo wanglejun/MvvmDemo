@@ -1,4 +1,4 @@
-package com.mvvm.model;
+package com.mvvm.entity;
 
 /**
  * Http下行Entity

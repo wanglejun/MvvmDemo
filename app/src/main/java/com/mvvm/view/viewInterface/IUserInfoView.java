@@ -1,6 +1,7 @@
 package com.mvvm.view.viewInterface;
 
-import com.mvvm.view.entity.UserEntity;
+
+import com.mvvm.entity.UserEntity;
 
 /**
  * user view层接口 开放给vm层实现

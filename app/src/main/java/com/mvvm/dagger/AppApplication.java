@@ -1,4 +1,4 @@
-package com.mvvm;
+package com.mvvm.dagger;
 
 import android.app.Application;
 

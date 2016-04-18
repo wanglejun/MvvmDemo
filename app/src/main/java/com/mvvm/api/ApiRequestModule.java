@@ -2,9 +2,6 @@ package com.mvvm.api;
 
 import com.mvvm.api.interfaces.IUserApi;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
