@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mvvm.api.ApiRequestModule;
 import com.mvvm.api.interfaces.IUserApi;
+import com.mvvmdao.greendao.DaoSession;
 
 import javax.inject.Singleton;
 
@@ -20,4 +21,5 @@ public interface AppComponet{
 //    void inject(AppApplication appApplication);
     IUserApi getIUserApi();
     Context context();
+    DaoSession getDaoSession();
 }

@@ -4,12 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.mvvm.dao.UserInofDbDao;
 import com.mvvm.entity.UserEntity;
 import com.mvvm.model.UserModel;
+import com.mvvm.utils.Constants;
+import com.mvvm.utils.SharedPreferencesUtils;
 import com.mvvm.view.activity.LoginActivity;
 import com.mvvm.view.activity.MainActivity;
 import com.mvvm.view.activity.RegisterActivity;
 import com.mvvm.view.viewInterface.IUserInfoView;
+import com.mvvmdao.greendao.UserInfo;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,12 +31,13 @@ public class UserInfoViewModel implements IUserInfoView{
 
     private UserModel userModel;
     private Context context;
-    private UserEntity userEntity;
+    private SharedPreferencesUtils sharedPreferencesUtils;
     @Inject
     public UserInfoViewModel(Context context, UserModel userModel){
         this.context = context;
         this.userModel = userModel;
         userModel.setiUserInfoView(this);
+        sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context);
     }
 
     public void requestLogin(String username, String password){
@@ -56,9 +63,9 @@ public class UserInfoViewModel implements IUserInfoView{
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClass(context, MainActivity.class);
         context.startActivity(intent);
-        this.userEntity = new UserEntity();
-        this.userEntity.setUsername(userEntity.getUsername());
-        this.userEntity.setCreateAt(userEntity.getCreateAt());
+        //保存登录状态
+        sharedPreferencesUtils.putBooleanValues(Constants.SP_KEY_LOGIN_STATUS,true);
+        sharedPreferencesUtils.putStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID,userEntity.getObjectId());
     }
 
     //注册成功回调
@@ -73,9 +80,15 @@ public class UserInfoViewModel implements IUserInfoView{
 
     //获取用户信息
     public UserEntity getUserInfo(){
-
+        UserEntity userEntity = new UserEntity();
+        List<UserInfo> userInfo = userModel.queryUserInfoOfObjectId(sharedPreferencesUtils.getStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID));
+        if(userInfo!=null&&userInfo.size()>0){
+            userEntity.setUsername(userInfo.get(0).getUsername());
+            userEntity.setCreatedAt(userInfo.get(0).getCteatAt());
+        }
         return userEntity;
     }
+
     //    public void onClick(View v) {
 //        switch (v.getId()){
 //            case R.id.login_sign_in_btn:

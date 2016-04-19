@@ -2,6 +2,10 @@ package com.mvvm.dagger;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.mvvmdao.greendao.DaoMaster;
+import com.mvvmdao.greendao.DaoSession;
 
 import javax.inject.Singleton;
 
@@ -28,6 +32,27 @@ public class AppModule {
         return application;
     }
 
+    /****GreenDao 数据库初始化************/
+    @Singleton
+    @Provides
+    public SQLiteDatabase provideSQLiteDatabase(){
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(application,"userinfo-db",null);
+        SQLiteDatabase sqLiteDatabase = helper.getWritableDatabase();
+        return sqLiteDatabase;
+    }
 
+    @Singleton
+    @Provides
+    public DaoMaster providesDaoMaster(SQLiteDatabase sqLiteDatabase){
+        DaoMaster daoMaster = new DaoMaster(sqLiteDatabase);
+        return daoMaster;
+    }
+
+    @Singleton
+    @Provides
+    public DaoSession providesDaoSession(DaoMaster daoMaster){
+        DaoSession daoSession = daoMaster.newSession();
+        return daoSession;
+    }
 
 }

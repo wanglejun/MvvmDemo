@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         activityComponet.inject(this);
-        mainBinding.setUserInfo(mainBinding.getUserInfo());
+        mainBinding.setUserInfo(userInfoViewModel.getUserInfo());
     }
 
     @Override

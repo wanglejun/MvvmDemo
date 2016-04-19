@@ -5,9 +5,13 @@ import android.widget.Toast;
 
 import com.mvvm.dagger.AppApplication;
 import com.mvvm.api.interfaces.IUserApi;
+import com.mvvm.dao.UserInofDbDao;
 import com.mvvm.entity.HttpResponseEntity;
 import com.mvvm.entity.UserEntity;
 import com.mvvm.view.viewInterface.IUserInfoView;
+import com.mvvmdao.greendao.UserInfo;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,11 +29,12 @@ public class UserModel{
     IUserApi iUserApi;
     private IUserInfoView iUserInfoView;
     private Context context;
-
+    private UserInofDbDao userInofDbDao;
     @Inject
     public UserModel(){
         this.context = AppApplication.getsInstance().getAppComponent().context();
         iUserApi = AppApplication.getsInstance().getAppComponent().getIUserApi();
+        userInofDbDao = UserInofDbDao.getInstance();
     }
 
     /**
@@ -37,7 +42,7 @@ public class UserModel{
      * @param username 用户名
      * @param password 密码
      */
-    public void login(String username,String password){
+    public void login(String username, final String password){
         Call<HttpResponseEntity<UserEntity>> callResponse = iUserApi.login(username,password);
         callResponse.enqueue(new Callback<HttpResponseEntity<UserEntity>>() {
             @Override
@@ -45,9 +50,13 @@ public class UserModel{
                 System.out.println();
                 System.out.println("ssssssssssssssssssssss");
                 System.out.println("isSuccessful----------------->"+response.isSuccessful());
-                System.out.println("username----------------->"+response.body().getData().getUsername());
                 if(response.code() == 200){
-                    iUserInfoView.loginSuccess(response.body().getData());
+                    UserEntity userEntity = response.body().getData();
+                    userEntity.setPassword(password);
+                    //保存用户信息
+                    userInofDbDao.insertUserInfo(userEntity);
+                    iUserInfoView.loginSuccess(userEntity);
+
                 }
             }
 
@@ -96,4 +105,12 @@ public class UserModel{
     }
 
 
+    /**
+     * 根据objectId查询userinfo
+     * @param objectId
+     * @return
+     */
+    public List<UserInfo> queryUserInfoOfObjectId(String objectId){
+        return userInofDbDao.queryUserInfoOfObjectId(objectId);
+    }
 }

@@ -17,7 +17,7 @@ public class UserEntity extends BaseObservable{
     //用户id
     public String objectId;
     //创建时间
-    public String createAt;
+    public String createdAt;
 
     @Bindable
     public String getUsername() {
@@ -47,12 +47,13 @@ public class UserEntity extends BaseObservable{
     }
 
     @Bindable
-    public String getCreateAt() {
-        return createAt;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
-        notifyPropertyChanged(BR.createAt);
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+        notifyPropertyChanged(BR.createdAt);
     }
+
 }
