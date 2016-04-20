@@ -2,19 +2,19 @@ package com.mvvm.viewmodel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.mvvm.dao.UserInofDbDao;
 import com.mvvm.entity.UserEntity;
+import com.mvvm.eventbus.BaseEvent;
 import com.mvvm.model.UserModel;
 import com.mvvm.utils.ActivityIntentUtils;
 import com.mvvm.utils.Constants;
 import com.mvvm.utils.SharedPreferencesUtils;
-import com.mvvm.view.activity.LoginActivity;
-import com.mvvm.view.activity.MainActivity;
-import com.mvvm.view.activity.RegisterActivity;
-import com.mvvm.view.viewInterface.IUserInfoView;
 import com.mvvmdao.greendao.UserInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ import javax.inject.Inject;
  * Time: 16:06
  * 用户信息  ViewModel
  */
-public class UserInfoViewModel implements IUserInfoView{
+public class UserInfoViewModel{
 
     private UserModel userModel;
     private Context context;
@@ -37,7 +37,6 @@ public class UserInfoViewModel implements IUserInfoView{
     @Inject
     public UserInfoViewModel(UserModel userModel){
         this.userModel = userModel;
-        userModel.setiUserInfoView(this);
     }
 
     public void setContext(Context context) {
@@ -46,6 +45,11 @@ public class UserInfoViewModel implements IUserInfoView{
         activityIntentUtils = new ActivityIntentUtils(context);
     }
 
+    /**
+     * 登录请求
+     * @param username
+     * @param password
+     */
     public void requestLogin(String username, String password){
         if(!inputValidate(username,password)){
             return;
@@ -53,6 +57,11 @@ public class UserInfoViewModel implements IUserInfoView{
         userModel.login(username, password);
     }
 
+    /**
+     * 注册请求
+     * @param username
+     * @param password
+     */
     public void requestRegister(String username, String password){
         if(!inputValidate(username,password)) {
             return;
@@ -60,27 +69,16 @@ public class UserInfoViewModel implements IUserInfoView{
         userModel.register(username, password);
     }
 
-    /**
-     * 登录成功回调
-     * @param userEntity
-     */
-    @Override
-    public void loginSuccess(UserEntity userEntity) {
-        Toast.makeText(context,"loginSuccess",Toast.LENGTH_LONG).show();
-        activityIntentUtils.turnToNextActivity(MainActivity.class);
-        //保存登录状态
-        sharedPreferencesUtils.putBooleanValues(Constants.SP_KEY_LOGIN_STATUS,true);
-        sharedPreferencesUtils.putStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID, userEntity.getObjectId());
-    }
 
-    /**
-     * 注册成功回调
-     */
-    @Override
-    public void registerSuccess() {
-        Toast.makeText(context,"注册成功",Toast.LENGTH_LONG).show();
-        activityIntentUtils.turnToNextActivity(LoginActivity.class);
-    }
+//    @Subscribe
+//    public void onLoginEvent(){
+//    }
+//
+//    @Subscribe
+//    public void onEventMainThread(BaseEvent event) {
+//    }
+
+
 
     /**
      * 获取用户信息
@@ -94,6 +92,14 @@ public class UserInfoViewModel implements IUserInfoView{
             userEntity.setCreatedAt(userInfo.get(0).getCteatAt());
         }
         return userEntity;
+    }
+
+    public void registerEventBus(){
+        EventBus.getDefault().register(context);
+    }
+
+    public void unRegisterEventBus(){
+        EventBus.getDefault().unregister(context);
     }
 
     //    public void onClick(View v) {

@@ -8,8 +8,11 @@ import com.mvvm.api.interfaces.IUserApi;
 import com.mvvm.dao.UserInofDbDao;
 import com.mvvm.entity.HttpResponseEntity;
 import com.mvvm.entity.UserEntity;
-import com.mvvm.view.viewInterface.IUserInfoView;
+import com.mvvm.eventbus.LoginEvent;
+import com.mvvm.eventbus.RegisterEvent;
 import com.mvvmdao.greendao.UserInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -27,7 +30,6 @@ import retrofit2.Response;
  * */
 public class UserModel{
     IUserApi iUserApi;
-    private IUserInfoView iUserInfoView;
     private Context context;
     private UserInofDbDao userInofDbDao;
     @Inject
@@ -53,7 +55,7 @@ public class UserModel{
                     userEntity.setPassword(password);
                     //保存用户信息
                     userInofDbDao.insertUserInfo(userEntity);
-                    iUserInfoView.loginSuccess(userEntity);
+                    EventBus.getDefault().post(new LoginEvent(userEntity));
                 }else{
                     if(!"".equals(response.body().getMsg())){
                         Toast.makeText(context,response.body().getMsg(),Toast.LENGTH_LONG).show();
@@ -63,7 +65,6 @@ public class UserModel{
 
             @Override
             public void onFailure(Call<HttpResponseEntity<UserEntity>> call, Throwable t) {
-                System.out.println();
                 System.out.println("onFailure..............."+t.getMessage());
                 Toast.makeText(context,"登录失败",Toast.LENGTH_LONG).show();
 
@@ -85,7 +86,7 @@ public class UserModel{
                 System.out.println();
                 System.out.println("register........");
                 if(response.body().getCode() == 200){
-                    iUserInfoView.registerSuccess();
+                    EventBus.getDefault().post(new RegisterEvent());
                 }else if(response.body().getCode() == 202){
                     Toast.makeText(context,"用户已存在",Toast.LENGTH_LONG).show();
                 }
@@ -93,7 +94,6 @@ public class UserModel{
 
             @Override
             public void onFailure(Call<HttpResponseEntity<String>> call, Throwable t) {
-                System.out.println();
                 System.out.println("onFailure..............."+t.getMessage());
                 Toast.makeText(context,"注册失败",Toast.LENGTH_LONG).show();
 
@@ -101,9 +101,7 @@ public class UserModel{
         });
 
     }
-    public void setiUserInfoView(IUserInfoView iUserInfoView) {
-        this.iUserInfoView = iUserInfoView;
-    }
+
 
 
     /**

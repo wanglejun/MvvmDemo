@@ -27,8 +27,8 @@ public class MvvmDaoGenerator {
         addUserInfo(schema);
 
         // 使用 DAOGenerator 类的 generateAll() 方法自动生成代码，此处你需要根据自己的情况更改输出目录（既之前创建的 java-gen)。
-//        new DaoGenerator().generateAll(schema, "/Users/wanglejun/AndroidStudioProjects/MvvmDemo/app/src/main/java-gen");
-        new DaoGenerator().generateAll(schema, "E:\\android\\studio\\MvvmDemo\\app\\src\\main\\java-gen\\");
+        new DaoGenerator().generateAll(schema, "/Users/wanglejun/AndroidStudioProjects/MvvmDemo/app/src/main/java-gen");
+//        new DaoGenerator().generateAll(schema, "E:\\android\\studio\\MvvmDemo\\app\\src\\main\\java-gen\\");
     }
 
     public static void addUserInfo(Schema schema){
