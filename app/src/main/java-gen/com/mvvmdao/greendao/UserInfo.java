@@ -9,7 +9,6 @@ package com.mvvmdao.greendao;
  */
 public class UserInfo {
 
-    private Long id;
     /** Not-null value. */
     private String objectId;
     /** Not-null value. */
@@ -25,24 +24,15 @@ public class UserInfo {
     public UserInfo() {
     }
 
-    public UserInfo(Long id) {
-        this.id = id;
+    public UserInfo(String objectId) {
+        this.objectId = objectId;
     }
 
-    public UserInfo(Long id, String objectId, String username, String password, String cteatAt) {
-        this.id = id;
+    public UserInfo(String objectId, String username, String password, String cteatAt) {
         this.objectId = objectId;
         this.username = username;
         this.password = password;
         this.cteatAt = cteatAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     /** Not-null value. */

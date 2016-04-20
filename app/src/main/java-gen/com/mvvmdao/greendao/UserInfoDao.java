@@ -14,7 +14,7 @@ import com.mvvmdao.greendao.UserInfo;
 /** 
  * DAO for table "USER_INFO".
 */
-public class UserInfoDao extends AbstractDao<UserInfo, Long> {
+public class UserInfoDao extends AbstractDao<UserInfo, String> {
 
     public static final String TABLENAME = "USER_INFO";
 
@@ -23,11 +23,10 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
      * Can be used for QueryBuilder and for referencing column names.
     */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property ObjectId = new Property(1, String.class, "objectId", false, "OBJECT_ID");
-        public final static Property Username = new Property(2, String.class, "username", false, "USERNAME");
-        public final static Property Password = new Property(3, String.class, "password", false, "PASSWORD");
-        public final static Property CteatAt = new Property(4, String.class, "cteatAt", false, "CTEAT_AT");
+        public final static Property ObjectId = new Property(0, String.class, "objectId", true, "OBJECT_ID");
+        public final static Property Username = new Property(1, String.class, "username", false, "USERNAME");
+        public final static Property Password = new Property(2, String.class, "password", false, "PASSWORD");
+        public final static Property CteatAt = new Property(3, String.class, "cteatAt", false, "CTEAT_AT");
     };
 
 
@@ -43,11 +42,10 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER_INFO\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"OBJECT_ID\" TEXT NOT NULL ," + // 1: objectId
-                "\"USERNAME\" TEXT NOT NULL ," + // 2: username
-                "\"PASSWORD\" TEXT NOT NULL ," + // 3: password
-                "\"CTEAT_AT\" TEXT NOT NULL );"); // 4: cteatAt
+                "\"OBJECT_ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: objectId
+                "\"USERNAME\" TEXT NOT NULL ," + // 1: username
+                "\"PASSWORD\" TEXT NOT NULL ," + // 2: password
+                "\"CTEAT_AT\" TEXT NOT NULL );"); // 3: cteatAt
     }
 
     /** Drops the underlying database table. */
@@ -60,32 +58,26 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
     @Override
     protected void bindValues(SQLiteStatement stmt, UserInfo entity) {
         stmt.clearBindings();
- 
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
-        }
-        stmt.bindString(2, entity.getObjectId());
-        stmt.bindString(3, entity.getUsername());
-        stmt.bindString(4, entity.getPassword());
-        stmt.bindString(5, entity.getCteatAt());
+        stmt.bindString(1, entity.getObjectId());
+        stmt.bindString(2, entity.getUsername());
+        stmt.bindString(3, entity.getPassword());
+        stmt.bindString(4, entity.getCteatAt());
     }
 
     /** @inheritdoc */
     @Override
-    public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.getString(offset + 0);
     }    
 
     /** @inheritdoc */
     @Override
     public UserInfo readEntity(Cursor cursor, int offset) {
         UserInfo entity = new UserInfo( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // objectId
-            cursor.getString(offset + 2), // username
-            cursor.getString(offset + 3), // password
-            cursor.getString(offset + 4) // cteatAt
+            cursor.getString(offset + 0), // objectId
+            cursor.getString(offset + 1), // username
+            cursor.getString(offset + 2), // password
+            cursor.getString(offset + 3) // cteatAt
         );
         return entity;
     }
@@ -93,25 +85,23 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, UserInfo entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setObjectId(cursor.getString(offset + 1));
-        entity.setUsername(cursor.getString(offset + 2));
-        entity.setPassword(cursor.getString(offset + 3));
-        entity.setCteatAt(cursor.getString(offset + 4));
+        entity.setObjectId(cursor.getString(offset + 0));
+        entity.setUsername(cursor.getString(offset + 1));
+        entity.setPassword(cursor.getString(offset + 2));
+        entity.setCteatAt(cursor.getString(offset + 3));
      }
     
     /** @inheritdoc */
     @Override
-    protected Long updateKeyAfterInsert(UserInfo entity, long rowId) {
-        entity.setId(rowId);
-        return rowId;
+    protected String updateKeyAfterInsert(UserInfo entity, long rowId) {
+        return entity.getObjectId();
     }
     
     /** @inheritdoc */
     @Override
-    public Long getKey(UserInfo entity) {
+    public String getKey(UserInfo entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getObjectId();
         } else {
             return null;
         }

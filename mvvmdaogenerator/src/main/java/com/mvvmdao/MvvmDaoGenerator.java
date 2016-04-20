@@ -11,7 +11,7 @@ public class MvvmDaoGenerator {
     public static void main(String[] args) throws Exception {
         // 正如你所见的，你创建了一个用于添加实体（Entity）的模式（Schema）对象。
         // 两个参数分别代表：数据库版本号与自动生成代码的包路径。
-        Schema schema = new Schema(1, "com.mvvmdao.greendao");
+        Schema schema = new Schema(2, "com.mvvmdao.greendao");
 //      指定生成的 Bean 与 DAO 类所在的目录，
 //      Schema schema = new Schema(1, "com.mvvmdao.bean");
 //      schema.setDefaultJavaPackageDao("com.mvvmdao.dao");
@@ -27,13 +27,13 @@ public class MvvmDaoGenerator {
         addUserInfo(schema);
 
         // 使用 DAOGenerator 类的 generateAll() 方法自动生成代码，此处你需要根据自己的情况更改输出目录（既之前创建的 java-gen)。
-        new DaoGenerator().generateAll(schema, "/Users/wanglejun/AndroidStudioProjects/MvvmDemo/app/src/main/java-gen");
+//        new DaoGenerator().generateAll(schema, "/Users/wanglejun/AndroidStudioProjects/MvvmDemo/app/src/main/java-gen");
+        new DaoGenerator().generateAll(schema, "E:\\android\\studio\\MvvmDemo\\app\\src\\main\\java-gen\\");
     }
 
     public static void addUserInfo(Schema schema){
         Entity userInfo = schema.addEntity("UserInfo");
-        userInfo.addIdProperty();
-        userInfo.addStringProperty("objectId").notNull();
+        userInfo.addStringProperty("objectId").primaryKey().notNull();
         userInfo.addStringProperty("username").notNull();
         userInfo.addStringProperty("password").notNull();
         userInfo.addStringProperty("cteatAt").notNull();

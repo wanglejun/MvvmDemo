@@ -47,16 +47,17 @@ public class UserModel{
         callResponse.enqueue(new Callback<HttpResponseEntity<UserEntity>>() {
             @Override
             public void onResponse(Call<HttpResponseEntity<UserEntity>> call, Response<HttpResponseEntity<UserEntity>> response) {
-                System.out.println();
-                System.out.println("ssssssssssssssssssssss");
                 System.out.println("isSuccessful----------------->"+response.isSuccessful());
-                if(response.code() == 200){
+                if(response.body().getCode() == 200){
                     UserEntity userEntity = response.body().getData();
                     userEntity.setPassword(password);
                     //保存用户信息
                     userInofDbDao.insertUserInfo(userEntity);
                     iUserInfoView.loginSuccess(userEntity);
-
+                }else{
+                    if(!"".equals(response.body().getMsg())){
+                        Toast.makeText(context,response.body().getMsg(),Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 
@@ -83,9 +84,9 @@ public class UserModel{
             public void onResponse(Call<HttpResponseEntity<String>> call, Response<HttpResponseEntity<String>> response) {
                 System.out.println();
                 System.out.println("register........");
-                if(response.code() == 200){
+                if(response.body().getCode() == 200){
                     iUserInfoView.registerSuccess();
-                }else if(response.code() == 202){
+                }else if(response.body().getCode() == 202){
                     Toast.makeText(context,"用户已存在",Toast.LENGTH_LONG).show();
                 }
             }

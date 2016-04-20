@@ -39,6 +39,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 //        loginBinding = getDataBinding();
         loginBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
         activityComponet.inject(this);
+        userInfoViewModel.setContext(this);
 //        loginBinding.setUserInfoViewModel(userInfoViewModel);
     }
 
@@ -67,7 +68,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 break;
 
             case R.id.login_register_btn:
-                userInfoViewModel.goRegister();
+                userInfoViewModel.activityIntentUtils.turnToActivity(RegisterActivity.class);
                 break;
         }
     }

@@ -31,6 +31,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void initView() {
         registerBinding = DataBindingUtil.setContentView(this,R.layout.activity_register);
         activityComponet.inject(this);
+        userInfoViewModel.setContext(this);
     }
 
     @Override

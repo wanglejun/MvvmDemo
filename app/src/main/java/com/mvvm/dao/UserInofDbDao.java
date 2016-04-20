@@ -45,14 +45,13 @@ public class UserInofDbDao {
      */
     public void insertUserInfo(UserEntity userEntity){
         List<UserInfo> userInfoList = queryUserInfoOfObjectId(userEntity.getObjectId());
-        UserInfo userInfo = new UserInfo(null,userEntity.getObjectId(),userEntity.getUsername(),userEntity.getPassword(),userEntity.getCreatedAt());
+        UserInfo userInfo = new UserInfo(userEntity.getObjectId(),userEntity.getUsername(),userEntity.getPassword(),userEntity.getCreatedAt());
         //用户已存在 更新用户信息
-//        if(userInfoList!=null&&userInfoList.size()>0){
-//            userInfoDao.update(userInfo);
-//        }else{
-//            userInfoDao.insert(userInfo);
-//        }
-        userInfoDao.insert(userInfo);
+        if(userInfoList!=null&&userInfoList.size()>0){
+            userInfoDao.update(userInfo);
+        }else{
+            userInfoDao.insert(userInfo);
+        }
     }
 
     /**
@@ -60,7 +59,7 @@ public class UserInofDbDao {
      * @param userEntity user对象
      */
     public void updateUserInfo(UserEntity userEntity){
-        UserInfo userInfo = new UserInfo(null,userEntity.getObjectId(),userEntity.getUsername(),userEntity.getPassword(),userEntity.getCreatedAt());
+        UserInfo userInfo = new UserInfo(userEntity.getObjectId(),userEntity.getUsername(),userEntity.getPassword(),userEntity.getCreatedAt());
         userInfoDao.update(userInfo);
     }
 

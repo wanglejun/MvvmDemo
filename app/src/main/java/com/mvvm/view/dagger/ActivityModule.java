@@ -18,17 +18,17 @@ import dagger.Provides;
 @Module
 public class ActivityModule {
 
-    @Provides
-    public Context provideContext(){
-        return AppApplication.getsInstance().getAppComponent().context();
-    }
+//    @Provides
+//    public Context provideContext(){
+//        return AppApplication.getsInstance().getAppComponent().context();
+//    }
 
     /**
      * 提供UserInfoViewModel
      * @return UserInfoViewModel
      */
     @Provides
-    public UserInfoViewModel provideUserInfoViewModel(Context context){
-        return new UserInfoViewModel(context,new UserModel());
+    public UserInfoViewModel provideUserInfoViewModel(){
+        return new UserInfoViewModel(new UserModel());
     }
 }

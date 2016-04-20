@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.mvvm.dao.UserInofDbDao;
 import com.mvvm.entity.UserEntity;
 import com.mvvm.model.UserModel;
+import com.mvvm.utils.ActivityIntentUtils;
 import com.mvvm.utils.Constants;
 import com.mvvm.utils.SharedPreferencesUtils;
 import com.mvvm.view.activity.LoginActivity;
@@ -31,54 +32,60 @@ public class UserInfoViewModel implements IUserInfoView{
 
     private UserModel userModel;
     private Context context;
-    private SharedPreferencesUtils sharedPreferencesUtils;
+    public SharedPreferencesUtils sharedPreferencesUtils;
+    public ActivityIntentUtils activityIntentUtils;
     @Inject
-    public UserInfoViewModel(Context context, UserModel userModel){
-        this.context = context;
+    public UserInfoViewModel(UserModel userModel){
         this.userModel = userModel;
         userModel.setiUserInfoView(this);
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
         sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context);
+        activityIntentUtils = new ActivityIntentUtils(context);
     }
 
     public void requestLogin(String username, String password){
-        userModel.login(username,password);
+        if(!inputValidate(username,password)){
+            return;
+        }
+        userModel.login(username, password);
     }
 
     public void requestRegister(String username, String password){
-        userModel.register(username,password);
+        if(!inputValidate(username,password)) {
+            return;
+        }
+        userModel.register(username, password);
     }
 
-    public void goRegister(){
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setClass(context, RegisterActivity.class);
-        context.startActivity(intent);
-    }
-
-    //登录成功回调
+    /**
+     * 登录成功回调
+     * @param userEntity
+     */
     @Override
     public void loginSuccess(UserEntity userEntity) {
         Toast.makeText(context,"loginSuccess",Toast.LENGTH_LONG).show();
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setClass(context, MainActivity.class);
-        context.startActivity(intent);
+        activityIntentUtils.turnToNextActivity(MainActivity.class);
         //保存登录状态
         sharedPreferencesUtils.putBooleanValues(Constants.SP_KEY_LOGIN_STATUS,true);
-        sharedPreferencesUtils.putStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID,userEntity.getObjectId());
+        sharedPreferencesUtils.putStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID, userEntity.getObjectId());
     }
 
-    //注册成功回调
+    /**
+     * 注册成功回调
+     */
     @Override
     public void registerSuccess() {
         Toast.makeText(context,"注册成功",Toast.LENGTH_LONG).show();
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setClass(context, LoginActivity.class);
-        context.startActivity(intent);
+        activityIntentUtils.turnToNextActivity(LoginActivity.class);
     }
 
-    //获取用户信息
+    /**
+     * 获取用户信息
+     * @return
+     */
     public UserEntity getUserInfo(){
         UserEntity userEntity = new UserEntity();
         List<UserInfo> userInfo = userModel.queryUserInfoOfObjectId(sharedPreferencesUtils.getStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID));
@@ -103,4 +110,24 @@ public class UserInfoViewModel implements IUserInfoView{
 //    public void setLoginBinding(ActivityLoginBinding loginBinding) {
 //        this.loginBinding = loginBinding;
 //    }
+
+
+    /**
+     * 输入验证
+     * @param username
+     * @param password
+     * @return
+     */
+    private boolean inputValidate(String username, String password){
+        if("".equals(username)){
+            Toast.makeText(context,"请输入用户名",Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if("".equals(password)){
+            Toast.makeText(context,"请输入密码",Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
 }
