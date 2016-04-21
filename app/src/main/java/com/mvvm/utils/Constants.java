@@ -11,7 +11,5 @@ public class Constants {
     public static final String SP_KEY_LOGIN_STATUS = "SP_KEY_LOGIN_STATUS";
     //SharedPreferences 记录当前登录用户ID
     public static final String SP_KEY_LOGIN_OBJECT_ID = "SP_KEY_LOGIN_OBJECT_ID";
-    //SharedPreferences 记录当前登录用户username
-    public static final String SP_KEY_LOGIN_USERNAME = "SP_KEY_LOGIN_USERNAME";
 
 }

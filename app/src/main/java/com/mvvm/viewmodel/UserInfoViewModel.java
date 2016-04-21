@@ -34,6 +34,7 @@ public class UserInfoViewModel{
     private Context context;
     public SharedPreferencesUtils sharedPreferencesUtils;
     public ActivityIntentUtils activityIntentUtils;
+
     @Inject
     public UserInfoViewModel(UserModel userModel){
         this.userModel = userModel;
@@ -70,16 +71,6 @@ public class UserInfoViewModel{
     }
 
 
-//    @Subscribe
-//    public void onLoginEvent(){
-//    }
-//
-//    @Subscribe
-//    public void onEventMainThread(BaseEvent event) {
-//    }
-
-
-
     /**
      * 获取用户信息
      * @return
@@ -91,6 +82,16 @@ public class UserInfoViewModel{
             userEntity.setUsername(userInfo.get(0).getUsername());
             userEntity.setCreatedAt(userInfo.get(0).getCteatAt());
         }
+        return userEntity;
+    }
+
+    /**
+     * 更新用户名显示
+     * @param username
+     */
+    public UserEntity updateUsername(String username){
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(username);
         return userEntity;
     }
 
@@ -135,5 +136,17 @@ public class UserInfoViewModel{
             return false;
         }
         return true;
+    }
+
+    /**
+     * 更新登录状态
+     * @param objecId
+     * @param isLogin
+     */
+    public void updatgeLoginStatus(String objecId,boolean isLogin){
+        sharedPreferencesUtils.putBooleanValues(Constants.SP_KEY_LOGIN_STATUS, isLogin);
+        if(!"".equals(objecId)){
+            sharedPreferencesUtils.putStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID,objecId );
+        }
     }
 }

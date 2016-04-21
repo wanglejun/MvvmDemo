@@ -2,10 +2,9 @@
  >
 
     <data>
-        <!--
         <variable
-            name="userInfoViewModel"
-            type="com.mvvm.view.viewmodel.UserInfoViewModel"/>-->
+            name="userInfo"
+            type="com.mvvm.entity.UserEntity"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -51,7 +50,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:text="@{userInfo.username}"/>
 
             </android.support.design.widget.TextInputLayout>
 

@@ -3,8 +3,8 @@
 
     <data>
         <variable
-            name="userInfo"
-            type="com.mvvm.entity.UserEntity"/>
+            name="userInfoViewModel"
+            type="com.mvvm.viewmodel.UserInfoViewModel"/>
     </data>
 
     <RelativeLayout
@@ -30,7 +30,7 @@
             android:layout_below="@id/main_welcome_text"
             android:layout_centerHorizontal="true"
             android:textSize="28sp"
-            android:text="@{userInfo.username}"
+            android:text="@{userInfoViewModel.getUserInfo().username}"
             android:layout_marginTop="30dp"/>
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_below="@id/main_username_text"
             android:layout_centerHorizontal="true"
             android:textSize="20sp"
-            android:text="@{userInfo.createdAt}"
+            android:text="@{userInfoViewModel.getUserInfo().createdAt}"
             android:layout_marginTop="15dp"
             />
 

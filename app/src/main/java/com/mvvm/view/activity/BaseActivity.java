@@ -5,9 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mvvm.dagger.AppApplication;
 import com.mvvm.dagger.AppComponet;
-import com.mvvm.view.dagger.ActivityComponet;
-import com.mvvm.view.dagger.ActivityModule;
-import com.mvvm.view.dagger.DaggerActivityComponet;
 
 
 /**
@@ -17,7 +14,7 @@ public abstract class BaseActivity
 //        <V extends ViewDataBinding>
         extends AppCompatActivity {
 
-    public ActivityComponet activityComponet;
+//    public ActivityComponet activityComponet;
 //    private V dataBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +26,7 @@ public abstract class BaseActivity
 
     private void init(){
         initAppComponet(AppApplication.getsInstance().getAppComponent());
-        activityComponet = DaggerActivityComponet.builder().activityModule(new ActivityModule()).build();
+//        activityComponet = DaggerActivityComponet.builder().activityModule(new ActivityModule()).build();
 
 //        dataBinding = DataBindingUtil.setContentView(this,inflaterContentView());
         initView();
@@ -48,17 +45,21 @@ public abstract class BaseActivity
     /**
      * 初始数据
      */
-    public abstract void initData();
+    public void initData(){}
+
 
     /**
      * 初始全局Componet
      */
-    public abstract void initAppComponet(AppComponet appComponet);
+    public void initAppComponet(AppComponet appComponet){}
 
     /**
      * 设置监听
      */
-    public abstract void setListener();
+    public void setListener(){
+
+    }
+
 
 //    public V getDataBinding(){
 //        return dataBinding;

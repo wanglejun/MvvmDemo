@@ -14,6 +14,9 @@ import com.mvvm.eventbus.BaseEvent;
 import com.mvvm.eventbus.LoginEvent;
 import com.mvvm.eventbus.RegisterEvent;
 import com.mvvm.utils.Constants;
+import com.mvvm.view.dagger.component.DaggerUserInfoComponent;
+import com.mvvm.view.dagger.component.UserInfoComponent;
+import com.mvvm.view.dagger.module.UserInfoModule;
 import com.mvvm.viewmodel.UserInfoViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,6 +34,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     UserInfoViewModel userInfoViewModel;
     private ActivityRegisterBinding registerBinding;
     private boolean isRegisterSuccess = false;
+
+    private UserInfoComponent userInfoComponent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,18 +44,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void initView() {
         registerBinding = DataBindingUtil.setContentView(this,R.layout.activity_register);
-        activityComponet.inject(this);
+
+        userInfoComponent = DaggerUserInfoComponent.builder().userInfoModule(new UserInfoModule()).build();
+        userInfoComponent.inject(this);
+
         userInfoViewModel.setContext(this);
-    }
-
-    @Override
-    public void initData() {
-
-    }
-
-    @Override
-    public void initAppComponet(AppComponet appComponet) {
-
     }
 
     @Override
@@ -72,8 +70,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void onEventMainThread(BaseEvent event) {
         if (event instanceof RegisterEvent) {
             Toast.makeText(this,"注册成功",Toast.LENGTH_LONG).show();
-            userInfoViewModel.sharedPreferencesUtils.putStringValues(Constants.SP_KEY_LOGIN_USERNAME,
-                    registerBinding.registerUsernameEdit.getText().toString().trim());
             isRegisterSuccess = true;
             finish();
         }

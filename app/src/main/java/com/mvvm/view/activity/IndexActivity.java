@@ -3,13 +3,13 @@ package com.mvvm.view.activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 
 import com.mvvm.R;
-import com.mvvm.dagger.AppComponet;
 import com.mvvm.databinding.ActivityIndexBinding;
-import com.mvvm.databinding.ActivityMainBinding;
 import com.mvvm.utils.Constants;
+import com.mvvm.view.dagger.component.DaggerUserInfoComponent;
+import com.mvvm.view.dagger.component.UserInfoComponent;
+import com.mvvm.view.dagger.module.UserInfoModule;
 import com.mvvm.viewmodel.UserInfoViewModel;
 
 import javax.inject.Inject;
@@ -17,11 +17,13 @@ import javax.inject.Inject;
 /**
  * 启动页
  */
-public class IndexActivity extends BaseActivity implements View.OnClickListener{
+public class IndexActivity extends BaseActivity{
     //注入UserInfoViewModel
     @Inject
     UserInfoViewModel userInfoViewModel;
     ActivityIndexBinding indexBinding;
+
+    private UserInfoComponent userInfoComponent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +32,9 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void initView() {
         indexBinding = DataBindingUtil.setContentView(this,R.layout.activity_index);
-        activityComponet.inject(this);
+
+        userInfoComponent = DaggerUserInfoComponent.builder().userInfoModule(new UserInfoModule()).build();
+        userInfoComponent.inject(this);
         userInfoViewModel.setContext(this);
         new Handler().postDelayed(new Runnable() {
 
@@ -45,25 +49,5 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener{
                 }
             }
         }, 1500);
-    }
-
-    @Override
-    public void initData() {
-
-    }
-
-    @Override
-    public void initAppComponet(AppComponet appComponet) {
-
-    }
-
-    @Override
-    public void setListener() {
-
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }
