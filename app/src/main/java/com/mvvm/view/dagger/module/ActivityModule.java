@@ -1,10 +1,9 @@
 package com.mvvm.view.dagger.module;
 
-import android.content.Context;
+import android.app.Activity;
 
 
-import com.mvvm.dagger.AppApplication;
-
+import com.mvvm.utils.ActivityIntentUtils;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,8 +16,18 @@ import dagger.Provides;
 @Module
 public class ActivityModule {
 
+    private Activity activity;
+    public ActivityModule(Activity activity){
+        this.activity = activity;
+    }
+
     @Provides
-    public Context provideContext(){
-        return AppApplication.getsInstance().getAppComponent().context();
+    public Activity provideActivity(){
+        return activity;
+    }
+
+    @Provides
+    public ActivityIntentUtils providesActivityIntentUtils(Activity activity){
+        return new ActivityIntentUtils(activity);
     }
 }

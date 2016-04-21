@@ -1,15 +1,20 @@
 package com.mvvm.view.dagger.component;
 
 
+import android.app.Activity;
+
+import com.mvvm.utils.ActivityIntentUtils;
 import com.mvvm.view.activity.BaseActivity;
 import com.mvvm.view.dagger.module.ActivityModule;
 
 import dagger.Component;
 
 /**
- * 全局Activity使用 暂时没用上
+ * Activity使用
  */
 @Component(modules = {ActivityModule.class})
 public interface ActivityComponet {
-    void inject(BaseActivity baseActivity);
+    Activity getActivity();
+
+    ActivityIntentUtils getACIntentUtils();
 }

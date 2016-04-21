@@ -9,21 +9,21 @@ import java.util.ArrayList;
 /**
  * SharedPreferences 工具类
  */
-public class SharedPreferencesUtils {
+public class SPUtils {
 	private final String NAME = "MVVMDEMO";
 	private SharedPreferences sharedPreferences;
-	public static SharedPreferencesUtils sharedPreferencesUtils;
+	public static SPUtils SPUtils;
 
-	public SharedPreferencesUtils(Context context) {
+	public SPUtils(Context context) {
 		// TODO Auto-generated constructor stub
 		sharedPreferences = context.getSharedPreferences(NAME, 0);
 	}
 
-	public static SharedPreferencesUtils getInstance(Context context){
-		if(sharedPreferencesUtils == null){
-			sharedPreferencesUtils = new SharedPreferencesUtils(context);
+	public static SPUtils getInstance(Context context){
+		if(SPUtils == null){
+			SPUtils = new SPUtils(context);
 		}
-		return sharedPreferencesUtils;
+		return SPUtils;
 	}
 	/**
 	 * 

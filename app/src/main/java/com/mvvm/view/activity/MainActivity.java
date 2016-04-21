@@ -25,7 +25,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Inject
     UserInfoViewModel userInfoViewModel;
     ActivityMainBinding mainBinding;
-    private UserInfoComponent userInfoComponent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +34,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void initView() {
         mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        userInfoComponent = DaggerUserInfoComponent.builder().userInfoModule(new UserInfoModule()).build();
-        userInfoComponent.inject(this);
-
-        userInfoViewModel.setContext(this);
         mainBinding.setUserInfoViewModel(userInfoViewModel);
     }
 
@@ -49,9 +44,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     @Override
+    public void initComponet() {
+        DaggerUserInfoComponent.builder().appComponet(getAppComponent()).
+                activityComponet(getActivityComponet()).build().inject(this);
+    }
+
+    @Override
     public void onClick(View v) {
         //退出 修改登录状态
         userInfoViewModel.updatgeLoginStatus("", false);
-        userInfoViewModel.activityIntentUtils.turnToNextActivity(LoginActivity.class);
+        userInfoViewModel.intentUtils.turnToNextActivity(LoginActivity.class);
     }
 }

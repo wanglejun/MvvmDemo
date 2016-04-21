@@ -3,6 +3,7 @@ package com.mvvm.view.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,7 +35,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     @Inject
     UserInfoViewModel userInfoViewModel;
 
-    private UserInfoComponent userInfoComponent;
     ActivityLoginBinding loginBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +50,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void initView() {
 //        loginBinding = getDataBinding();
         loginBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
-        userInfoComponent = DaggerUserInfoComponent.builder().userInfoModule(new UserInfoModule()).build();
-        userInfoComponent.inject(this);
 
-        userInfoViewModel.setContext(this);
         loginBinding.setUserInfo(userInfoViewModel.getUserInfo());
-
-        loginBinding.loginUsernameEdit.setSelection(loginBinding.loginUsernameEdit.getText().toString().length());
     }
 
 
@@ -65,6 +60,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         loginBinding.loginSignInBtn.setOnClickListener(this);
         loginBinding.loginRegisterBtn.setOnClickListener(this);
     }
+
+    @Override
+    public void initComponet() {
+        DaggerUserInfoComponent.builder().appComponet(getAppComponent()).
+                activityComponet(getActivityComponet()).build().inject(this);
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -77,7 +79,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
             //注册.
             case R.id.login_register_btn:
-                userInfoViewModel.activityIntentUtils.turnToActivity(RegisterActivity.class);
+                userInfoViewModel.intentUtils.turnToActivity(RegisterActivity.class);
                 break;
         }
     }
@@ -88,7 +90,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void onEventMainThread(BaseEvent event) {
         if (event instanceof LoginEvent) {
             Toast.makeText(this,"loginSuccess",Toast.LENGTH_LONG).show();
-            userInfoViewModel.activityIntentUtils.turnToNextActivity(MainActivity.class);
+            userInfoViewModel.intentUtils.turnToNextActivity(MainActivity.class);
             //保存登录状态
             userInfoViewModel.updatgeLoginStatus(((LoginEvent) event).getUserEntity().getObjectId(), true);
         }

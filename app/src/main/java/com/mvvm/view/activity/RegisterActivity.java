@@ -35,7 +35,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private ActivityRegisterBinding registerBinding;
     private boolean isRegisterSuccess = false;
 
-    private UserInfoComponent userInfoComponent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +44,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void initView() {
         registerBinding = DataBindingUtil.setContentView(this,R.layout.activity_register);
 
-        userInfoComponent = DaggerUserInfoComponent.builder().userInfoModule(new UserInfoModule()).build();
-        userInfoComponent.inject(this);
-
-        userInfoViewModel.setContext(this);
     }
 
     @Override
     public void setListener() {
         registerBinding.registerBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void initComponet() {
+        DaggerUserInfoComponent.builder().appComponet(getAppComponent()).
+                activityComponet(getActivityComponet()).build().inject(this);
     }
 
     @Override

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.mvvm.dagger.scope.PerApp;
+import com.mvvm.utils.SPUtils;
 import com.mvvmdao.greendao.DaoMaster;
 import com.mvvmdao.greendao.DaoSession;
 
@@ -26,14 +28,14 @@ public class AppModule {
         this.application=application;
     }
 
-    @Singleton
+    @PerApp
     @Provides
     public Context provideContext(){
         return application;
     }
 
     /****GreenDao 数据库初始化************/
-    @Singleton
+    @PerApp
     @Provides
     public SQLiteDatabase provideSQLiteDatabase(){
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(application,"userinfo-db",null);
@@ -41,18 +43,22 @@ public class AppModule {
         return sqLiteDatabase;
     }
 
-    @Singleton
+    @PerApp
     @Provides
     public DaoMaster providesDaoMaster(SQLiteDatabase sqLiteDatabase){
         DaoMaster daoMaster = new DaoMaster(sqLiteDatabase);
         return daoMaster;
     }
 
-    @Singleton
+    @PerApp
     @Provides
     public DaoSession providesDaoSession(DaoMaster daoMaster){
         DaoSession daoSession = daoMaster.newSession();
         return daoSession;
     }
 
+    @Provides
+    public SPUtils providesSPUtils(){
+        return new SPUtils(application);
+    }
 }

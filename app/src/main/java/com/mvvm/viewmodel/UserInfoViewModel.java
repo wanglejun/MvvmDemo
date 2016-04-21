@@ -1,17 +1,14 @@
 package com.mvvm.viewmodel;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.mvvm.dao.UserInofDbDao;
 import com.mvvm.entity.UserEntity;
-import com.mvvm.eventbus.BaseEvent;
 import com.mvvm.model.UserModel;
 import com.mvvm.utils.ActivityIntentUtils;
 import com.mvvm.utils.Constants;
-import com.mvvm.utils.SharedPreferencesUtils;
+import com.mvvm.utils.SPUtils;
 import com.mvvmdao.greendao.UserInfo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,19 +29,17 @@ public class UserInfoViewModel{
 
     private UserModel userModel;
     private Context context;
-    public SharedPreferencesUtils sharedPreferencesUtils;
-    public ActivityIntentUtils activityIntentUtils;
+    public SPUtils SPUtils;
+    public ActivityIntentUtils intentUtils;
 
     @Inject
-    public UserInfoViewModel(UserModel userModel){
+    public UserInfoViewModel(Activity context, UserModel userModel, SPUtils SPUtils, ActivityIntentUtils intentUtils){
         this.userModel = userModel;
+        this.SPUtils = SPUtils;
+        this.intentUtils = intentUtils;
+        this.context = context;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-        sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context);
-        activityIntentUtils = new ActivityIntentUtils(context);
-    }
 
     /**
      * 登录请求
@@ -77,7 +72,7 @@ public class UserInfoViewModel{
      */
     public UserEntity getUserInfo(){
         UserEntity userEntity = new UserEntity();
-        List<UserInfo> userInfo = userModel.queryUserInfoOfObjectId(sharedPreferencesUtils.getStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID));
+        List<UserInfo> userInfo = userModel.queryUserInfoOfObjectId(SPUtils.getStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID));
         if(userInfo!=null&&userInfo.size()>0){
             userEntity.setUsername(userInfo.get(0).getUsername());
             userEntity.setCreatedAt(userInfo.get(0).getCteatAt());
@@ -144,9 +139,9 @@ public class UserInfoViewModel{
      * @param isLogin
      */
     public void updatgeLoginStatus(String objecId,boolean isLogin){
-        sharedPreferencesUtils.putBooleanValues(Constants.SP_KEY_LOGIN_STATUS, isLogin);
+        SPUtils.putBooleanValues(Constants.SP_KEY_LOGIN_STATUS, isLogin);
         if(!"".equals(objecId)){
-            sharedPreferencesUtils.putStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID,objecId );
+            SPUtils.putStringValues(Constants.SP_KEY_LOGIN_OBJECT_ID,objecId );
         }
     }
 }

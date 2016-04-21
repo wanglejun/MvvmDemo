@@ -49,7 +49,6 @@ public class UserModel{
         callResponse.enqueue(new Callback<HttpResponseEntity<UserEntity>>() {
             @Override
             public void onResponse(Call<HttpResponseEntity<UserEntity>> call, Response<HttpResponseEntity<UserEntity>> response) {
-                System.out.println("isSuccessful----------------->"+response.isSuccessful());
                 if(response.body().getCode() == 200){
                     UserEntity userEntity = response.body().getData();
                     userEntity.setPassword(password);
@@ -83,8 +82,6 @@ public class UserModel{
         callResponse.enqueue(new Callback<HttpResponseEntity<String>>() {
             @Override
             public void onResponse(Call<HttpResponseEntity<String>> call, Response<HttpResponseEntity<String>> response) {
-                System.out.println();
-                System.out.println("register........");
                 if(response.body().getCode() == 200){
                     EventBus.getDefault().post(new RegisterEvent());
                 }else if(response.body().getCode() == 202){

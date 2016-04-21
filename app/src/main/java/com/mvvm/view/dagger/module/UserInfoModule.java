@@ -1,6 +1,10 @@
 package com.mvvm.view.dagger.module;
 
+import android.app.Activity;
+
 import com.mvvm.model.UserModel;
+import com.mvvm.utils.ActivityIntentUtils;
+import com.mvvm.utils.SPUtils;
 import com.mvvm.viewmodel.UserInfoViewModel;
 
 import dagger.Module;
@@ -23,7 +27,7 @@ public class UserInfoModule {
      * @return UserInfoViewModel
      */
     @Provides
-    public UserInfoViewModel provideUserInfoViewModel(UserModel userModel){
-        return new UserInfoViewModel(userModel);
+    public UserInfoViewModel provideUserInfoViewModel(Activity context, UserModel userModel, SPUtils SPUtils, ActivityIntentUtils intentUtils){
+        return new UserInfoViewModel(context,userModel, SPUtils,intentUtils);
     }
 }
